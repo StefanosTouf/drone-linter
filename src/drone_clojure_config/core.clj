@@ -1,19 +1,13 @@
-(ns drone-config
+(ns drone-config.core
   (:require
-    [clojure.spec.alpha :as s]))
+    [clojure.spec.alpha :as spec]))
 
 
-(set! *warn-on-reflection* true)
-
-(s/def ::name string?)
-(s/def ::image string?)
-(s/def ::command string?)
-(s/def ::commands (s/coll-of ::command))
-
-(s/def ::step (s/keys :req-un [::name ::image ::commands]))
-
-(def step {:name "asd" :image "asd" :commands ["do stuff" "do stuff 2"]})
-
-(s/valid? ::step step)
+(spec/valid? :drone-config.step/step
+             {:name "asd"
+              :image "asd"
+              :commands ["do stuff" "do stuff 2"]
+              :when {:branch {:exclude ["asd" "asd"]}
+                     :event {:include ["pull_request"] :exclude ["push"]}}})
 
 
