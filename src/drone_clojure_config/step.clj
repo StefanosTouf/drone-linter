@@ -10,7 +10,9 @@
 
 (defmacro incl-excl
   [spec]
-  `(s/or :array ~spec :incl-excl
+  `(s/or :array
+         (s/and #(or (vector? %) (seq? %)) ~spec)
+         :incl-excl
          (s/or
            :one-of (s/and
                      (s/map-of
@@ -19,8 +21,8 @@
                          :exclude #(= :exclude %))
                        ~spec)
                      ::single-elem-map)
-           :both (s/and 
-                   #(s/valid? ~spec (:include %)) 
+           :both (s/and
+                   #(s/valid? ~spec (:include %))
                    #(s/valid? ~spec (:exclude %))))))
 
 
@@ -35,12 +37,15 @@
 ;; conditions
 (s/def ::branch (incl-excl (s/coll-of string?)))
 
-(s/def ::event-type #{"push" "pull_request" "tag" "promote" "rollback"})
-(s/def ::event (incl-excl (s/coll-of ::event-type)))
+(s/def ::event (incl-excl (s/coll-of #{"push" "pull_request" "tag" "promote" "rollback"})))
+(s/def ::repo (incl-excl (s/coll-of  #(boolean (re-find #"^[^/]+/[^/]+$" %)))))
+(s/def ::ref (incl-excl (s/coll-of  #(boolean (re-find #"^([^/]+/)+[^/]+$" %)))))
+(s/def ::instance (incl-excl (s/coll-of  string?)))
 
-(s/def ::ref (incl-excl (s/coll-of string?)))
-
-(s/def ::when (s/keys :req-un [(or ::branch ::event ::ref ::repo ::instance ::status ::target ::cron)]))
+(def when-keys #{:branch :event :ref :repo :instance :status :target :cron})
+(s/def ::when 
+  (s/and (s/every (fn [[k _]] (when-keys k))) 
+         (s/keys :req-un [(or ::branch ::event ::ref ::repo ::instance ::status ::target ::cron)])))
 
 
 (s/def ::step (s/keys :req-un [::name ::image ::commands] :opt-un [::environment ::when ::failure ::detach ::privileged]))
