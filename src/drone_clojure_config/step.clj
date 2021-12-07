@@ -42,10 +42,13 @@
 (s/def ::ref (incl-excl (s/coll-of  #(boolean (re-find #"^([^/]+/)+[^/]+$" %)))))
 (s/def ::instance (incl-excl (s/coll-of  string?)))
 
-(def when-keys #{:branch :event :ref :repo :instance :status :target :cron})
-(s/def ::when 
-  (s/and (s/every (fn [[k _]] (when-keys k))) 
+
+(s/def ::when
+  (s/and (s/map-of #{:branch :event :ref :repo :instance :status :target :cron} #(or true %))
          (s/keys :req-un [(or ::branch ::event ::ref ::repo ::instance ::status ::target ::cron)])))
 
 
-(s/def ::step (s/keys :req-un [::name ::image ::commands] :opt-un [::environment ::when ::failure ::detach ::privileged]))
+(s/def ::step
+  (s/and
+    (s/map-of #{:name :image :commands :environment :when :failure :detach :privileged} #(or true %))
+    (s/keys :req-un [::name ::image ::commands] :opt-un [::environment ::when ::failure ::detach ::privileged])))
