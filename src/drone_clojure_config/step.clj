@@ -25,30 +25,37 @@
                    #(s/valid? ~spec (:include %))
                    #(s/valid? ~spec (:exclude %))))))
 
+(defn belongs
+  [key-set]
+  (fn [[k _]] (boolean (key-set k))))
+
+(defmacro no-extra-keys-m [k-set] 
+  `(s/coll-of 
+    (belongs ~k-set)))
 
 ;; general
-(s/def ::name string?)
-(s/def ::image string?)
-(s/def ::command string?)
-(s/def ::commands (s/coll-of ::command))
-(s/def ::environment (s/every (fn [[k v]] (and (keyword? k) (string? v)))))
+(s/def :step/name    string?)
+(s/def :step/image   string?)
+(s/def :step/command string?)
+(s/def :step/commands    (s/coll-of :step/command))
+(s/def :step/environment (s/every (fn [[k v]] (and (keyword? k) (string? v)))))
 
 
 ;; conditions
-(s/def ::branch (incl-excl (s/coll-of string?)))
+(s/def :when/branch   (incl-excl (s/coll-of string?)))
+(s/def :when/event    (incl-excl (s/coll-of #{"push" "pull_request" "tag" "promote" "rollback"})))
+(s/def :when/repo     (incl-excl (s/coll-of  #(boolean (re-find #"^[^/]+/[^/]+$" %)))))
+(s/def :when/ref      (incl-excl (s/coll-of  #(boolean (re-find #"^([^/]+/)+[^/]+$" %)))))
+(s/def :when/instance (incl-excl (s/coll-of  string?)))
 
-(s/def ::event (incl-excl (s/coll-of #{"push" "pull_request" "tag" "promote" "rollback"})))
-(s/def ::repo (incl-excl (s/coll-of  #(boolean (re-find #"^[^/]+/[^/]+$" %)))))
-(s/def ::ref (incl-excl (s/coll-of  #(boolean (re-find #"^([^/]+/)+[^/]+$" %)))))
-(s/def ::instance (incl-excl (s/coll-of  string?)))
 
 
-(s/def ::when
-  (s/and (s/map-of #{:branch :event :ref :repo :instance :status :target :cron} #(or true %))
-         (s/keys :req-un [(or ::branch ::event ::ref ::repo ::instance ::status ::target ::cron)])))
+(s/def :when/when
+  (s/and (no-extra-keys-m  #{:branch :event :ref :repo :instance :status :target :cron}) 
+         (s/keys :req-un [(or :when/branch :when/event :when/ref :when/repo :when/instance :when/status :when/target :when/cron)])))
 
 
 (s/def ::step
   (s/and
-    (s/map-of #{:name :image :commands :environment :when :failure :detach :privileged} #(or true %))
-    (s/keys :req-un [::name ::image ::commands] :opt-un [::environment ::when ::failure ::detach ::privileged])))
+    (no-extra-keys-m #{:name :image :commands :environment :when :failure :detach :privileged})
+    (s/keys :req-un [:step/name :step/image :step/commands] :opt-un [:step/environment :when/when :step/failure :step/detach :step/privileged])))
