@@ -1,16 +1,25 @@
-(ns drone-config.core; 
+(ns drone-config.core
+  ; 
   (:require
     [clojure.spec.alpha :as spec]))
 
 
-(spec/explain :drone-config.step/step
-              {:name "asd"
-               :image "asd"
-               :commands ["do stuff" "do stuff 2"]
-               :when {:branch {:exclude ["asd" "asd"]}
-                      :event  {:include ["pull_request"] :exclude ["push"]}
-                      :repo   ["octocat/hello-world"]
-                      :ref    {:include ["asd/asd/asd"]  :exclude ["asd/asd/asd"]}
-                      :instance ["asd"]}})
+(spec/explain-data :drone-config.pipeline/pipeline
+              {:kind "pipeline"  
+               :type "docker"
+               :name "ablabla"
+               :steps [{:name "asd"
+                        :image "asd"
+                        :commands ["do stuff" "do stuff 2"]
+                        :when {:instance ["asd"]}}
+                       {:name "asd1"
+                        :image "asd"
+                        :commands ["do stuff" "do stuff 2"]
+                        :when {:instance ["asd"]}}
+                       {:name "asd2"
+                        :image "asd"
+                        :commands ["do stuff" "do stuff 2"]
+                        :when {:instance ["asd"]}
+                        :depends_on ["asd" "asd1"]}]})
 
 
