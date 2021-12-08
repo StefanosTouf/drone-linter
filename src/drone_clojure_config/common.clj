@@ -25,9 +25,9 @@
                  :conditions/instance :conditions/status :conditions/target
                  :conditions/cron :conditions/action)])))
 
+(s/def ::key-string-pair (s/map-of keyword? string?))
 
-(s/def ::environment
-  (s/every (fn [[k v]] (and (keyword? k) (string? v)))))
+(s/def ::environment ::key-string-pair)
 
 
 (s/def ::depends_on (s/coll-of string?))
@@ -38,6 +38,5 @@
   [map-coll]
   (let [name-seq (map #(% :name) map-coll)]
       (= (count name-seq) (count (set name-seq)))))
-
 
 (s/def ::unique-names unique-names-checker)
