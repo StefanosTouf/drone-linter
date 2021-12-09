@@ -15,16 +15,15 @@
 (s/def :conditions/cron (h/incl-excl (s/coll-of  string?)))
 (s/def :conditions/action (h/incl-excl (s/coll-of string?)))
 
-(def conditions-exact-keys 
-  #{:branch :event :ref :repo :instance :status :target :cron :action})
 
-
-(s/def ::conditions-keys-base
-  (s/keys :req-un
-          [(or :conditions/branch :conditions/event :conditions/ref :conditions/repo
-               :conditions/instance :conditions/status :conditions/target
-               :conditions/cron :conditions/action)]))
-
+(s/def ::conditions
+  (s/and
+    (h/no-extra-keys-m
+      #{:branch :event :ref :repo :instance :status :target :cron :action})
+    (s/keys :req-un
+            [(or :conditions/branch :conditions/event :conditions/ref :conditions/repo
+                 :conditions/instance :conditions/status :conditions/target
+                 :conditions/cron :conditions/action)])))
 
 (s/def ::key-string-pair (s/map-of keyword? string?))
 
@@ -38,7 +37,6 @@
   "Checks if all maps have a unique :name value"
   [map-coll]
   (let [name-seq (map #(% :name) map-coll)]
-    (= (count name-seq) (count (set name-seq)))))
-
+      (= (count name-seq) (count (set name-seq)))))
 
 (s/def ::unique-names unique-names-checker)

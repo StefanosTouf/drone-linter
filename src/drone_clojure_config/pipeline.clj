@@ -1,8 +1,6 @@
 (ns drone-config.pipeline
   (:require
-    [clojure.set :as set]
     [clojure.spec.alpha :as s]
-    [drone-config.common :as c]
     [drone-config.helpers :as h]))
 
 
@@ -32,9 +30,8 @@
 ;; --trigger
 (s/def :pipeline/trigger
   (s/and
-    (h/no-extra-keys-m
-      (set/difference c/conditions-exact-keys #{:instance}))
-    :drone-config.common/conditions-keys-base))
+    #(not (contains? % :instance))
+    :drone-config.common/conditions))
 
 
 ;; --base
