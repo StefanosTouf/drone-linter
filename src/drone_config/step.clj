@@ -1,9 +1,10 @@
 (ns drone-config.step
   (:require
+    [clojure.set :as set-ops]
     [clojure.spec.alpha :as s]
-    [drone-config.helpers :as h]
     [drone-config.common :as c]
-    [clojure.set :as set-ops]))
+    [drone-config.helpers :as h]
+    [drone-config.plugins :as p]))
 
 
 (set! *warn-on-reflection* true)
@@ -27,6 +28,7 @@
     (h/no-extra-keys-m (set-ops/difference c/condition-exact-keys #{:action}))
     :drone-config.common/condition-keys))
 
+
 (s/def :step-volumes/name string?)
 (s/def :step-volumes/path string?)
 
@@ -40,11 +42,13 @@
 
 
 (s/def ::step
-  (s/and
-    (h/no-extra-keys-m
-      #{:name :image :commands :environment :depends_on
-        :when :failure :detach :privileged :volumes})
-    (s/keys :req-un [:step/name :step/image :step/commands]
-            :opt-un [:drone-config.common/environment ::when
-                     :drone-config.common/depends_on :step/failure
-                     :step/detach :step/privileged :step/volumes])))
+  (s/or
+    :plugin :drone-config.plugins/plugin 
+    :normal (s/and
+           (h/no-extra-keys-m
+             #{:name :image :commands :environment :depends_on
+               :when :failure :detach :privileged :volumes})
+           (s/keys :req-un [:step/name :step/image :step/commands]
+                   :opt-un [:drone-config.common/environment ::when
+                            :drone-config.common/depends_on :step/failure
+                            :step/detach :step/privileged :step/volumes]))))

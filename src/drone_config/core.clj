@@ -1,7 +1,16 @@
 (ns drone-config.core
-  ;;
   (:require
-    [clojure.spec.alpha :as spec]))
+    [clojure.spec.alpha :as spec]
+    [drone-config.common]
+    [drone-config.helpers]
+    [drone-config.pipeline]
+    [drone-config.plugins]
+    [drone-config.step]))
+
+
+(defn -main
+  [args]
+  (println "hello world"))
 
 
 (spec/explain-data :drone-config.pipeline/pipeline
@@ -15,20 +24,15 @@
                                         :path "/s/d"}
                                        {:name "name2"
                                         :path "/asd"}]
-                             :when {:instance ["asd"]}}
+                             :when {:instance ["asd"]
+                                    :branch {:include ["aa"]}}}
                             {:name "asd1"
                              :image "plugins/docker"
-                             :settings {:as "12" :ass "123" 
-                                        :username {:from_secret "asd"}
-                                        :password {:from_secret "asd"}
-                                        :discord_token "asd"}}
+                             :settings {:username {:from_secret "asd"}
+                                        :password {:from_secret "asd"}}}
                             {:name "asd2"
-                             :image "asd"
-                             :commands ["do stuff" "do stuff 2"]
-                             :volumes [{:name "name2" 
-                                        :path "/asd"}]
-                             :when {:instance ["asd"]}
-                             :depends_on ["asd" "asd1"]}]
+                             :image "appleboy/drone-discord"
+                             :settings {:username {:from_secret "as"}}}]
                     :volumes [{:name "name1"
                                :host {:path "s/asd/"}}
                               {:name "name2"

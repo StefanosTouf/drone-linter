@@ -1,9 +1,9 @@
 (ns drone-config.pipeline
   (:require
-    [clojure.spec.alpha :as s]
-    [drone-config.helpers :as h]
     [clojure.set :as set-ops]
-    [drone-config.common :as c]))
+    [clojure.spec.alpha :as s]
+    [drone-config.common :as c]
+    [drone-config.helpers :as h]))
 
 
 (defn all-deps-linked
@@ -71,9 +71,9 @@
 
 (s/def :pipeline/steps
   (s/and
-    (s/coll-of :drone-config.step/step)
     :drone-config.common/unique-names
-    :steps/all-deps-linked))
+    :steps/all-deps-linked
+    (s/coll-of :drone-config.step/step)))
 
 
 ;; --services
