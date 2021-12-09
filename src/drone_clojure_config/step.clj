@@ -1,7 +1,9 @@
 (ns drone-config.step
   (:require
     [clojure.spec.alpha :as s]
-    [drone-config.helpers :as h]))
+    [drone-config.helpers :as h]
+    [drone-config.common :as c]
+    [clojure.set :as set-ops]))
 
 
 (set! *warn-on-reflection* true)
@@ -22,9 +24,8 @@
 
 (s/def ::when
   (s/and
-    #(not (contains? % :action))
-    :drone-config.common/conditions))
-
+    (h/no-extra-keys-m (set-ops/difference c/condition-exact-keys #{:action}))
+    :drone-config.common/condition-keys))
 
 (s/def :step-volumes/name string?)
 (s/def :step-volumes/path string?)

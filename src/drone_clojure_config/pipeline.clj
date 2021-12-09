@@ -1,7 +1,9 @@
 (ns drone-config.pipeline
   (:require
     [clojure.spec.alpha :as s]
-    [drone-config.helpers :as h]))
+    [drone-config.helpers :as h]
+    [clojure.set :as set-ops]
+    [drone-config.common :as c]))
 
 
 (defn all-deps-linked
@@ -30,8 +32,8 @@
 ;; --trigger
 (s/def :pipeline/trigger
   (s/and
-    #(not (contains? % :instance))
-    :drone-config.common/conditions))
+    (h/no-extra-keys-m (set-ops/difference c/condition-exact-keys #{:instance}))
+    :drone-config.common/condition-keys))
 
 
 ;; --base

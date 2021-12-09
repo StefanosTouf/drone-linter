@@ -16,14 +16,13 @@
 (s/def :conditions/action (h/incl-excl (s/coll-of string?)))
 
 
-(s/def ::conditions
-  (s/and
-    (h/no-extra-keys-m
-      #{:branch :event :ref :repo :instance :status :target :cron :action})
-    (s/keys :req-un
+(def condition-exact-keys #{:branch :event :ref :repo :instance :status :target :cron :action})
+
+(s/def ::condition-keys
+  (s/keys :req-un
             [(or :conditions/branch :conditions/event :conditions/ref :conditions/repo
                  :conditions/instance :conditions/status :conditions/target
-                 :conditions/cron :conditions/action)])))
+                 :conditions/cron :conditions/action)]))
 
 (s/def ::key-string-pair (s/map-of keyword? string?))
 
