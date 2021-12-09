@@ -17,9 +17,11 @@
                                         :path "/asd"}]
                              :when {:instance ["asd"]}}
                             {:name "asd1"
-                             :image "asd"
-                             :commands ["do stuff" "do stuff 2"]
-                             :when {:instance ["asd"]}}
+                             :image "plugins/docker"
+                             :settings {:as "12" :ass "123" 
+                                        :username {:from_secret "asd"}
+                                        :password {:from_secret "asd"}
+                                        :discord_token "asd"}}
                             {:name "asd2"
                              :image "asd"
                              :commands ["do stuff" "do stuff 2"]
