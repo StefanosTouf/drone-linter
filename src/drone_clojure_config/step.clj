@@ -43,14 +43,14 @@
 
 (s/def ::step
   (s/or
-    (s/and 
-      (h/no-extra-keys-m #{:name :image :settings})
-      ::plugin-step)
-    (s/and
-      (h/no-extra-keys-m
-        #{:name :image :commands :environment :depends_on
-          :when :failure :detach :privileged :volumes})
-      (s/keys :req-un [:step/name :step/image :step/commands]
-              :opt-un [:drone-config.common/environment ::when
-                       :drone-config.common/depends_on :step/failure
-                       :step/detach :step/privileged :step/volumes]))))
+    :plugin (s/and
+              (h/no-extra-keys-m #{:name :image :settings})
+              :drone-config.plugins/plugin-step)
+    :normal (s/and
+              (h/no-extra-keys-m
+                #{:name :image :commands :environment :depends_on
+                  :when :failure :detach :privileged :volumes})
+              (s/keys :req-un [:step/name :step/image :step/commands]
+                      :opt-un [:drone-config.common/environment ::when
+                               :drone-config.common/depends_on :step/failure
+                               :step/detach :step/privileged :step/volumes]))))
