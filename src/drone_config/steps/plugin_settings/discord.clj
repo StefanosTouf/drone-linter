@@ -1,4 +1,4 @@
-(ns drone-config.plugin-settings.discord)
+(ns drone-config.steps.plugin-settings.discord)
 
 (def image-name "appleboy/drone-discord")
 

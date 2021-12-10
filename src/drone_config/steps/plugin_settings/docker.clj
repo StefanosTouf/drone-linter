@@ -1,4 +1,4 @@
-(ns drone-config.plugin-settings.docker)
+(ns drone-config.steps.plugin-settings.docker)
 
 (def image-name "plugins/docker")
 
