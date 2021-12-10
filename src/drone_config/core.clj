@@ -51,27 +51,27 @@
     (spec/explain-data :main/config
                        (preprocessor
                          {:kind "pipeline"
-                          :type "docker"
-                          :platform {:os "windows" :arch "as" :version 123}
-                          :name "ablabla"
-                          :steps [{:name "asd"
-                                   :image "asd"
-                                   :commands ["do stuff" "do stuff 2"]
-                                   :volumes [{:name "name1"
-                                              :path "/s/d"}
-                                             {:name "name2"
-                                              :path "/asd"}]
-                                   :when {:instance ["asd"]
-                                          :branch {:include "aa"}}}
-                                  {:name "asd1"
-                                   :image "plugins/docker"
-                                   :settings {:username {:from_secret "asd"}
-                                              :password {:from_secret "asd"}}}
-                                  {:name "asd2"
-                                   :image "appleboy/drone-discord"}]
-                          :volumes [{:name "name1"
-                                     :host {:path "s/asd/"}}
-                                    {:name "name2"
-                                     :temp {}}]}))))
+                           :type "docker"
+                           :platform {:os "windows" :arch "as" :version 123}
+                           :name "ablabla"
+                           :steps [{:name "asd"
+                                    :image "asd"
+                                    :commands ["do stuff" "do stuff 2"]
+                                    :volumes [{:name "name1"
+                                               :path "/s/d"}
+                                              {:name "name2"
+                                               :path "/asd"}]
+                                    :when {:instance ["asd"]
+                                           :branch {:include "aa"}}}
+                                   {:name "asd1"
+                                    :image "plugins/docker"
+                                    :settings {:username {:from_secret "asd"}
+                                               :password {:from_secret "asd"}}}
+                                   {:name "asd2"
+                                    :image "appleboy/drone-discord"}]
+                           :volumes [{:name "name1"
+                                      :host {:path "s/asd/"}}
+                                     {:name "name2"
+                                      :temp {}}]}))))
 
 

@@ -116,9 +116,10 @@
 (s/def :pipelines/pipeline
   (s/and
     :pipeline/all-vols-linked
-    :pipeline/all-deps-linked
     (g/no-extra-keys-m
-      #{:trigger :platform :kind :type :name :workspace :clone :steps :depends_on :volumes :node})
+      #{:trigger :platform :kind :type 
+        :name :workspace :clone :steps 
+        :depends_on :volumes :node})
     (s/keys :req-un [:pipeline/kind :pipeline/type :pipeline/name]
             :opt-un [:pipeline/trigger :pipeline/platform :pipeline/workspace
                      :pipeline/clone :pipeline/steps :pipeline/services
@@ -127,4 +128,6 @@
 
 
 (s/def :main/config
-  (s/coll-of :pipelines/pipeline))
+  (s/and 
+    (s/coll-of :pipelines/pipeline)
+    :pipeline/all-deps-linked))
