@@ -7,8 +7,9 @@
 
 
 (def inc-excl-cond
-  "Must be either a collection, or include/exclude key with collection value")
+  "Must be either a collection of values, or include/exclude key with collection of values")
 
+(def unex-val "Unexpected value")
 
 (def error-messages
   {:general/environment
@@ -46,6 +47,8 @@
    :steps/all-deps-linked
    "All graph step dependencies must be linked"
    :steps/all-vols-linked
+   "All volumes must be linked"
+   :pipeline/all-vols-linked
    "All volumes must be linked"
    :services/service
    mm-keys
@@ -106,4 +109,12 @@
    :conditions/action
    inc-excl-cond
    :conditions/condition-keys
-   mm-keys})
+   mm-keys
+   :condition-status/status
+   unex-val
+   :conditions-event/event
+   unex-val
+   :conditions-repo/repo
+   "Isnt valid repo"
+   :conditions-ref/ref
+   "Isnt valid ref"})

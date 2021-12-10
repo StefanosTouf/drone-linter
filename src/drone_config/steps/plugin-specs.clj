@@ -28,10 +28,10 @@
   [settings-spec]
   `(s/and
      (g/no-extra-keys-m
-       #{:name :image :settings})
+       #{:name :image :when :settings})
      (s/keys :opt-un [:plugins/settings])
      (s/keys :req-un [:step/name :step/image]
-             :opt-un [:step/volumes ~settings-spec])))
+             :opt-un [:step/volumes :step/when ~settings-spec])))
 
 
 (s/def :plugins-docker/settings

@@ -34,9 +34,10 @@
 
 (defn problems-printer
   [expl-data]
-  (reverse
-    (map problem-printer
-         (:clojure.spec.alpha/problems expl-data))))
+  (let [c-via #(count (:via %))
+        cmpr #(compare (c-via %2) (c-via %1))
+        problems (sort cmpr (:clojure.spec.alpha/problems expl-data))]
+    (map problem-printer problems)))
 
 
 (defn linter-out
@@ -69,20 +70,20 @@
                   :image "asd"
                   :commands ["do stuff" "do stuff 2"]
                   :volumes [{:name "name1"
-                             :path "/s/d"}
+                             :path "path"}
                             {:name "name2"
-                             :path "/asd"}]
+                             :path "path"}]
                   :when {:instance ["asd"]
                          :branch {:include ["aa"]}}}
                  {:name "asd1"
                   :image "plugins/docker"
+                  :when {:repo ["success"]}
                   :settings {:username {:from_secret "asd"}
-                             :password {:from_secret "asd"}
-                             :aaa 1}}
+                             :password {:from_secret "asd"}}}
                  {:name "asd2"
                   :image "appleboy/drone-discord"}]
          :volumes [{:name "name1"
-                    :host {:path "s/asd/"}}
+                    :host {:path "/asd/"}}
                    {:name "name2"
                     :temp {}}]}))))
 

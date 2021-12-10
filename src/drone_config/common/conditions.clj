@@ -19,15 +19,24 @@
                    #(s/valid? ~spec (:exclude %))))))
 
 ;; conditions
-(s/def :conditions/branch   (incl-excl (s/coll-of string?)))
-(s/def :conditions/event    (incl-excl (s/coll-of #{"push" "pull_request" "tag" "promote" "rollback"})))
-(s/def :conditions/repo     (incl-excl (s/coll-of  #(boolean (re-find #"^[^/]+/[^/]+$" %)))))
-(s/def :conditions/ref      (incl-excl (s/coll-of  #(boolean (re-find #"^([^/]+/)+[^/]+$" %)))))
-(s/def :conditions/instance (incl-excl (s/coll-of  string?)))
-(s/def :conditions/status (s/coll-of  #{"success" "failure"}))
-(s/def :conditions/target (incl-excl (s/coll-of  string?)))
-(s/def :conditions/cron (incl-excl (s/coll-of  string?)))
-(s/def :conditions/action (incl-excl (s/coll-of string?)))
+(s/def :conditions/branch   (incl-excl (s/coll-of :general/string)))
+
+(s/def :conditions-event/event 
+  #{"push" "pull_request" "tag" "promote" "rollback"})
+(s/def :conditions/event    (incl-excl (s/coll-of :conditions-event/event)))
+
+(s/def :conditions-repo/repo #(boolean (re-find #"^[^/]+/[^/]+$" %)))
+(s/def :conditions/repo (incl-excl (s/coll-of  :conditions-repo/repo)))
+
+(s/def :conditions-ref/ref #(boolean (re-find #"^([^/]+/)+[^/]+$" %)))
+(s/def :conditions/ref      (incl-excl (s/coll-of  :conditions-ref/ref)))
+(s/def :conditions/instance (incl-excl (s/coll-of  :general/string)))
+
+(s/def :condition-status/status #{"success" "failure"})
+(s/def :conditions/status (s/coll-of  :condition-status/status))
+(s/def :conditions/target (incl-excl (s/coll-of  :general/string)))
+(s/def :conditions/cron (incl-excl (s/coll-of  :general/string)))
+(s/def :conditions/action (incl-excl (s/coll-of :general/string)))
 
 
 (def condition-exact-keys #{:branch :event :ref :repo :instance :status :target :cron :action})
