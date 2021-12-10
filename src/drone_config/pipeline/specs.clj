@@ -7,12 +7,16 @@
     [drone-config.common.predicates :as p]
     [drone-config.pipeline.predicates :as pp]))
 
+
 (def trigger-exact-keys (set-ops/difference c/condition-exact-keys #{:instance}))
+
+
 ;; --general
 (s/def :pipeline/has-path pp/has-path?)
 (s/def :pipeline/has-depth pp/has-depth?)
 (s/def :pipeline/has-disable pp/has-disable?)
 (s/def :pipeline/all-vols-linked pp/all-vols-linked)
+
 
 ;; --trigger
 (s/def :pipeline/trigger
@@ -34,6 +38,7 @@
 
 (s/def :platform/windows pp/windows-platform-validator)
 
+
 (s/def :pipeline/platform
   (s/and
     (g/no-extra-keys-m #{:os :arch :version})
@@ -53,6 +58,7 @@
 
 ;; --steps
 (s/def :steps/all-deps-linked pp/all-deps-linked)
+(s/def :pipeline/all-deps-linked pp/all-deps-linked)
 
 
 (s/def :pipeline/steps
@@ -107,11 +113,10 @@
   (s/coll-of :general/string))
 
 
-
-
 (s/def :pipelines/pipeline
   (s/and
     :pipeline/all-vols-linked
+    :pipeline/all-deps-linked
     (g/no-extra-keys-m
       #{:trigger :platform :kind :type :name :workspace :clone :steps :depends_on :volumes :node})
     (s/keys :req-un [:pipeline/kind :pipeline/type :pipeline/name]
@@ -119,3 +124,7 @@
                      :pipeline/clone :pipeline/steps :pipeline/services
                      :pipeline/depends_on :pipeline/node
                      :pipeline/volumes])))
+
+
+(s/def :main/config
+  (s/coll-of :pipelines/pipeline))

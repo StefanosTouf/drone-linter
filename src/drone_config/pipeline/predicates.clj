@@ -2,7 +2,7 @@
 
 
 (defn all-deps-linked
-  "All graph step dependencies need to be linked"
+  "All graph dependencies need to be linked"
   [step-seq]
   (let [names-deps-map
         (reduce (fn [acc step]
