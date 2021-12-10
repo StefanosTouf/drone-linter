@@ -15,7 +15,7 @@
     (if re (if (re-find re (name k)) true (recur res)) false)))
 
 
-(defn protected-value-from-secret
+(defn protected-secret-value
   "A protected value must be obtained from a secret"
   [[k v]]
   (if (protected-key? k) (from-secret? v) true))

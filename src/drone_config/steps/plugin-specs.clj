@@ -7,16 +7,21 @@
     [drone-config.steps.plugin-settings.docker :as docker]))
 
 
-(s/def :plugins-base-settings/protected-secret-values
-  (s/coll-of pp/protected-value-from-secret))
+(s/def :plugins/protected-secret-value
+  pp/protected-secret-value)
 
 
-(s/def :plugins-base/settings
-  :plugins-base-settings/protected-secret-values)
+(s/def :plugins/from-secret
+  pp/from-secret?)
 
 
-(s/def :plugins-base-settings/setting-value
-  (s/or :string string? :map pp/from-secret?))
+(s/def :plugins/settings
+  (s/coll-of :plugins/protected-secret-value))
+
+
+(s/def :plugins/setting-value
+  (s/or :string :general/string 
+        :map :plugins/from-secret))
 
 
 (defmacro plugin-keys
@@ -24,21 +29,21 @@
   `(s/and
      (g/no-extra-keys-m
        #{:name :image :settings})
-     (s/keys :opt-un [:plugins-base/settings])
+     (s/keys :opt-un [:plugins/settings])
      (s/keys :req-un [:step/name :step/image]
              :opt-un [:step/volumes ~settings-spec])))
 
 
 (s/def :plugins-docker/settings
-  (s/map-of docker/settings :plugins-base-settings/setting-value))
+  (s/map-of docker/settings :plugins/setting-value))
 
 
 (s/def :plugins-discord/settings
-  (s/map-of discord/settings :plugins-base-settings/setting-value))
+  (s/map-of discord/settings :plugins/setting-value))
 
 
 (s/def :plugins-default/settings
-  (s/map-of keyword? :plugins-base-settings/setting-value))
+  (s/map-of :general/keyword :plugins/setting-value))
 
 
 (defmulti plugin-type :image)

@@ -18,3 +18,11 @@
       (= (count name-seq) (count (set name-seq)))))
 
 (s/def :general/unique-names unique-names-checker)
+
+(s/def :general/string string?)
+(s/def :general/integer integer?)
+(s/def :general/map map?)
+(s/def :general/empty empty?)
+(s/def :general/boolean boolean?)
+(s/def :general/number number?)
+(s/def :general/keyword keyword?)

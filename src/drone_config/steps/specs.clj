@@ -7,26 +7,26 @@
 
 
 ;; general
-(s/def :step/name string?)
-(s/def :step/image string?)
-(s/def :step/command string?)
+(s/def :step/name :general/string)
+(s/def :step/image :general/string)
+(s/def :step/command :general/string)
 (s/def :step/commands (s/coll-of :step/command))
 
 
 ;; extras
 (s/def :step/failure #{"ignore"})
-(s/def :step/detach boolean?)
-(s/def :step/privileged boolean?)
+(s/def :step/detach :general/boolean)
+(s/def :step/privileged :general/boolean)
 
 
-(s/def ::when
+(s/def :step/when
   (s/and
     (g/no-extra-keys-m (set-ops/difference c/condition-exact-keys #{:action}))
     :conditions/condition-keys))
 
 
-(s/def :step-volumes/name string?)
-(s/def :step-volumes/path string?)
+(s/def :step-volumes/name :general/string)
+(s/def :step-volumes/path :general/string)
 
 
 (s/def :step-volumes/volume
@@ -37,7 +37,7 @@
 (s/def :step/volumes (s/coll-of :step-volumes/volume))
 
 (s/def :step/depends_on
-  (s/coll-of string?))
+  (s/coll-of :general/string))
 
 (s/def :steps/step
   (s/or
@@ -47,6 +47,6 @@
                 #{:name :image :commands :environment :depends_on
                   :when :failure :detach :privileged :volumes})
               (s/keys :req-un [:step/name :step/image :step/commands]
-                      :opt-un [:general/environment ::when
+                      :opt-un [:general/environment :step/when
                                :step/depends_on :step/failure
                                :step/detach :step/privileged :step/volumes]))))
