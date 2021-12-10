@@ -65,8 +65,6 @@
    mm-keys
    :plugins/protected-secret-value
    "A protected value must be obtained through a secret"
-   :plugins/from-secret
-   "A protected value must be obtained through a secret"
    :plugins/settings
    "Protected settings must be obtained through secrets"
    :plugins/setting-value
