@@ -9,7 +9,7 @@
      (p/belongs ~k-set)))
 
 (s/def :general/environment 
-  (s/map-of p/is-keyword? p/is-string?))
+  (s/map-of keyword? string?))
 
 (defn unique-names-checker
   ":name keys must be unique"

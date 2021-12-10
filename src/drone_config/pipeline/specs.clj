@@ -18,13 +18,13 @@
 ;; --base
 (s/def :pipeline/kind (p/one-of #{"pipeline"}))
 (s/def :pipeline/type (p/one-of  #{"docker"}))
-(s/def :pipeline/name p/is-string?)
+(s/def :pipeline/name string?)
 
 
 ;; --platform
 (s/def :platform/os (p/one-of  #{"windows" "os"}))
-(s/def :platform/arch p/is-string?)
-(s/def :platform/version p/is-number?)
+(s/def :platform/arch string?)
+(s/def :platform/version number?)
 
 
 (s/def :pipeline/platform
@@ -56,8 +56,8 @@
 
 
 ;; --services
-(s/def :services/name p/is-string?)
-(s/def :services/image p/is-string?)
+(s/def :services/name string?)
+(s/def :services/image string?)
 
 
 (s/def :services/service
@@ -69,20 +69,20 @@
 
 
 ;; --node
-(s/def :pipeline/node (s/map-of p/is-keyword? p/is-string?))
+(s/def :pipeline/node (s/map-of keyword? string?))
 
 
 ;; --volumes
-(s/def :pipeline-volumes/name p/is-string?)
+(s/def :pipeline-volumes/name string?)
 
 
 (s/def :pipeline-volumes/temp
   (s/and
-    p/is-map?
-    (s/or :empty p/is-empty? :medium-memory pp/medium-memory)))
+    map?
+    (s/or :empty empty? :medium-memory pp/medium-memory)))
 
 
-(s/def :pipeline-volumes/host (s/and p/is-map? pp/has-path?))
+(s/def :pipeline-volumes/host (s/and map? pp/has-path?))
 
 
 (s/def :pipeline-volumes/volume
@@ -97,7 +97,7 @@
 
 ;; --general
 (s/def :pipeline/depends_on
-  (s/coll-of p/is-string?))
+  (s/coll-of string?))
 
 
 ;; --overall rules

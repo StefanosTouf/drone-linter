@@ -1,5 +1,4 @@
-(ns drone-config.pipeline.predicates
-  (:require [drone-config.common.predicates :as p]))
+(ns drone-config.pipeline.predicates)
 
 
 (defn all-deps-linked
@@ -37,19 +36,19 @@
 (defn has-path?
   "Expected a :path key with string value"
   [v]
-  (p/is-string? (v :path)))
+  (string? (v :path)))
 
 
 (defn has-depth?
   "Expected a :depth key with integer value"
   [v]
-  (p/is-integer? (v :depth)))
+  (integer? (v :depth)))
 
 
 (defn has-disable?
   "Expected a :disable key with boolean value"
   [workspace]
-  (p/is-boolean? (workspace :disable)))
+  (boolean? (workspace :disable)))
 
 
 (defn medium-memory
