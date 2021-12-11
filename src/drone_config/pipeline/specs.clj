@@ -7,6 +7,7 @@
     [drone-config.common.predicates :as p]
     [drone-config.pipeline.predicates :as pp]))
 
+(set! *warn-on-reflection* true)
 
 (def trigger-exact-keys (set-ops/difference c/condition-exact-keys #{:instance}))
 

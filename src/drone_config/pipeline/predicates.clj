@@ -1,5 +1,6 @@
 (ns drone-config.pipeline.predicates)
 
+(set! *warn-on-reflection* true)
 
 (defn all-deps-linked
   "All graph dependencies need to be linked"

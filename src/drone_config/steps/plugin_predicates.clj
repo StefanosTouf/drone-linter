@@ -1,5 +1,8 @@
 (ns drone-config.steps.plugin-predicates)
 
+(set! *warn-on-reflection* true)
+
+
 (defn from-secret?
   "A protected value must be obtained from a secret"
   [v]

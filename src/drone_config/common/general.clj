@@ -3,6 +3,8 @@
     [clojure.spec.alpha :as s]
     [drone-config.common.predicates :as p]))
 
+(set! *warn-on-reflection* true)
+
 (defmacro no-extra-keys-m
   [k-set]
   `(s/coll-of

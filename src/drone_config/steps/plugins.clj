@@ -6,6 +6,7 @@
     [drone-config.steps.plugin-settings.discord :as discord]
     [drone-config.steps.plugin-settings.docker :as docker]))
 
+(set! *warn-on-reflection* true)
 
 (s/def :plugins-base-settings/protected-secret-values
   (s/coll-of pp/protected-secret-value))

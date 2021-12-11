@@ -11,6 +11,7 @@
     [drone-config.steps.plugin-specs]
     [drone-config.steps.specs]))
 
+(set! *warn-on-reflection* true)
 
 (defn docstring
   [f-name]

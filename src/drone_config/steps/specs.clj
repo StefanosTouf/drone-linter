@@ -1,10 +1,11 @@
-(ns drone-config.step
+(ns drone-config.steps.specs
   (:require
     [clojure.set :as set-ops]
     [clojure.spec.alpha :as s]
     [drone-config.common.conditions :as c]
     [drone-config.common.general :as g]))
 
+(set! *warn-on-reflection* true)
 
 ;; general
 (s/def :step/name :general/string)

@@ -1,6 +1,8 @@
 (ns drone-config.common.conditions
   (:require [clojure.spec.alpha :as s]))
 
+(set! *warn-on-reflection* true)
+
 (defmacro incl-excl
   [spec]
   `(s/or :array

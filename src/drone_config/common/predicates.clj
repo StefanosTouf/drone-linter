@@ -1,5 +1,6 @@
 (ns drone-config.common.predicates)
 
+(set! *warn-on-reflection* true)
 
 (defn belongs
   "Unexpected key"

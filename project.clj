@@ -6,4 +6,5 @@
   :dependencies [[org.clojure/data.json "2.4.0"] 
                  [org.clojure/clojure "1.10.0"]]
   :main drone-config.core 
-  :repl-options {:init-ns drone-config.core})
+  :repl-options {:init-ns drone-config.core}
+  :aot :all)

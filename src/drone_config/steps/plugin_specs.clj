@@ -7,6 +7,9 @@
     [drone-config.steps.plugin-settings.docker :as docker]))
 
 
+(set! *warn-on-reflection* true)
+
+
 (s/def :plugins/protected-secret-value
   pp/protected-secret-value)
 
@@ -20,7 +23,7 @@
 
 
 (s/def :plugins/setting-value
-  (s/or :string :general/string 
+  (s/or :string :general/string
         :map :plugins/from-secret))
 
 
