@@ -1,13 +1,15 @@
 (ns drone-config.core
+  (:gen-class)
   (:require
+    [clojure.data.json :as json]
     [clojure.spec.alpha :as spec]
     [clojure.string :as str-ops]
-    [drone-config.error-messages :as error]))
-
-
-(defn -main
-  [args]
-  (println "hello world"))
+    [drone-config.common.conditions]
+    [drone-config.common.general]
+    [drone-config.error-messages :as error]
+    [drone-config.pipeline.specs]
+    [drone-config.steps.plugin-specs]
+    [drone-config.steps.specs]))
 
 
 (defn docstring
@@ -19,7 +21,10 @@
   [via]
   (str-ops/join
     "\n "
-    (filter #(not (nil? %)) (reverse (map #(error/error-messages %) via)))))
+    (->>
+      (map #(error/error-messages %) via)
+      reverse
+      (filter #(not (nil? %))))))
 
 
 (defn problem-printer
@@ -57,34 +62,12 @@
     (vector pipelines)))
 
 
-(println
-  (linter-out
-    (spec/explain-data
-      :main/config
-      (preprocessor
-        {:kind "pipeline"
-         :type "docker"
-         :platform {:os "windows" :arch "as" :version 123}
-         :name "ablabla"
-         :steps [{:name "asd"
-                  :image "asd"
-                  :commands ["do stuff" "do stuff 2"]
-                  :volumes [{:name "name1"
-                             :path "path"}
-                            {:name "name2"
-                             :path "path"}]
-                  :when {:instance ["asd"]
-                         :branch {:include ["aa"]}}}
-                 {:name "asd1"
-                  :image "plugins/docker"
-                  :when {:repo ["success"]}
-                  :settings {:username {:from_secret "asd"}
-                             :password {:from_secret "asd"}}}
-                 {:name "asd2"
-                  :image "appleboy/drone-discord"}]
-         :volumes [{:name "name1"
-                    :host {:path "/asd/"}}
-                   {:name "name2"
-                    :temp {}}]}))))
-
-
+(defn -main
+  [& args]
+  (println
+    (linter-out
+      (spec/explain-data
+        :main/config
+        (preprocessor
+          (json/read-json
+            (str-ops/join args)))))))

@@ -1,0 +1,51 @@
+
+ {"kind": "pipeline",
+          "type": "docker",
+          "name": "ablabla",
+          "steps": [
+            {
+             "name": "asd",
+             "image": "asd",
+             "commands": ["do stuff", "do stuff 2"],
+             "volumes": [
+               {
+                 "name": "name1",
+                 "path": "path"
+               }
+             ],
+             "when": {
+               "instance": "asd",
+               "branch": {
+                 "include": ["aa"]
+               }
+             }
+            },      
+            {
+              "name": "asd1",
+              "image": "plugins/docker",
+              "when": {
+                "repo": ["succe/ss"]
+              },
+              "settings": {
+                "username": {
+                  "from_secret": "asd"
+                },
+                "password": {
+                  "from_secret": "asd"
+                }
+              }
+            },
+            {
+              "name": "asd2",
+              "image": "appleboy/drone-discord"
+            }
+          ],
+          "volumes": [
+            {
+              "name": "name1",
+              "host": {
+                "path": "/asd/"
+              }
+            }
+          ]
+ }
